@@ -1,24 +1,74 @@
-This is free and unencumbered software released into the public domain.
+Run(@ScriptDir & '\saloman6107_cs.bat') ; запускаем батник в папке с этим скриптом
+WinWaitActive("Steam Guard — Необходима авторизация компьютера")
+if not WinExists("Steam Desktop Authenticator") Then ; проверка запущен ли сда
+   Run("D:\Program Files\SDA-1.0.9\Steam Desktop Authenticator.exe") ; запускаем sda если не запущен
+   WinWaitActive("New Version") ; если у вас не старая версия 1.0.9 то удалите
+   Send("{right}") ; если у вас не старая версия 1.0.9 то удалите
+   Send("{enter}") ; если у вас не старая версия 1.0.9 то удалите
+EndIf
+WinActivate("Steam Desktop Authenticator")
+WinWaitActive("Steam Desktop Authenticator")
+Sleep (300)
+WinMove("Steam Desktop Authenticator", "", 1408, 296) ; перемещаем сда для удобства
+ControlClick("Steam Desktop Authenticator", "", "[Class:WindowsForms10.LISTBOX.app.0.afceb_r9_ad1; INSTANCE:1]")
+Sleep (300)
+Send("{home}")
+$a = ControlGetText ("Steam Desktop Authenticator", "", "[Class:WindowsForms10.Window.8.app.0.afceb_r9_ad1; INSTANCE:1]")
+$b = 0
+$c = "Account: saloman6107" ; название акка из сда
+$d = 1
+if $a = $c Then
+   $b = 1
+EndIf
+While $b <>1
+   Send("{down 1}")
+   $a = ControlGetText ("Steam Desktop Authenticator", "", "[Class:WindowsForms10.Window.8.app.0.afceb_r9_ad1; INSTANCE:1]")
+   $d = $d + 1
+   if $a = $c Then
+	  $b = 1
+   EndIf
+   if $d > 61 then ; 61 это кол-во всех аков в сда которые там зареганы
+	  MsgBox (0, "Ошибка", "Аккаунт отсутствует в SDA")
+	  Exit
+   EndIf
+WEnd
+ControlClick("Steam Desktop Authenticator", "", "[Class:WindowsForms10.BUTTON.app.0.afceb_r9_ad1; INSTANCE:3]")
+WinSetState("Steam Desktop Authenticator", "", @SW_MINIMIZE)
+WinActivate("Steam Guard — Необходима авторизация компьютера")
+WinWaitActive("Steam Guard — Необходима авторизация компьютера")
+Send('+{INS}')
+Send("{enter}")
+WinActivate("Counter-Strike: Global Offensive — Steam")
+WinWaitActive("Counter-Strike: Global Offensive — Steam")
+WinWaitClose("Counter-Strike: Global Offensive — Steam")
+WinExists("Counter-Strike: Global Offensive")
+WinActivate("Counter-Strike: Global Offensive")
+WinWaitActive("Counter-Strike: Global Offensive")
+$z = 0
+while $z = 0
+   $x = WinGetPos("Counter-Strike: Global Offensive")
+   if $x[2] < 420 and $x[3] < 420 Then
+	  $z = 1
+   EndIf
+WEnd
+WinSetTitle("Counter-Strike: Global Offensive", "", "csgo - saloman6107") ; переименовуем кс
+$m = 0
+While $m = 0
+   $k = Winlist()
+   for $i = 1 to $k[0][0]
+	  if StringRegExp($k[$i][0], "(csgo - saloman6107)") then
+		 $m = 1
+	  EndIf
+   Next
+   if $m = 0 Then
+	  WinSetTitle("Counter-Strike: Global Offensive", "", "csgo - saloman6107") ; переименовуем кс 2
+   EndIf
+WEnd
+WinExists("csgo - saloman6107")
+WinWaitActive("csgo - saloman6107")
+Sleep (3000)
+MouseClick('primary', 657, 365, 1) ; нажать играть
+MouseClick('primary', 820, 380, 1) ; нажать бой на смерть
+MouseClick('primary', 952, 614, 1) ; нажать начать
 
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
-
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-For more information, please refer to <https://unlicense.org>
+Exit
